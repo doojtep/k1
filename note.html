@@ -73,6 +73,7 @@
       transform: scale(1.03);
     }
 
+    /* แก้ไข z-index ของ snow-container และ falling ให้แมวไม่บังเนื้อหา */
     .snow-container {
       position: fixed;
       top: 0;
@@ -80,7 +81,7 @@
       width: 100%;
       height: 100%;
       pointer-events: none;
-      z-index: 0;
+      z-index: 0; /* ต่ำกว่าเนื้อหา */
     }
 
     .falling {
@@ -88,6 +89,7 @@
       width: 60px;
       height: auto;
       animation: fall linear infinite;
+      z-index: 0; /* แมวอยู่ข้างหลัง */
     }
 
     @keyframes fall {
@@ -108,7 +110,8 @@
   <div class="snow-container" id="snow-container"></div>
 
   <h1>🎂 เพิ่มโน้ตของคุณ 🎈</h1>
-  <form onsubmit="handleNoteSubmit(event)">
+  <!-- เปลี่ยน form ให้ส่ง POST ไป note.php จริง -->
+  <form action="note.php" method="POST">
     <label for="date">📅 วันที่:</label>
     <input type="date" id="date" name="date" required>
 
@@ -119,7 +122,7 @@
   </form>
 
   <script>
-    // หิมะ
+    // หิมะ (แมว)
     const imageSrc = "img/icon-removebg-preview.png";
     const container = document.getElementById("snow-container");
 
@@ -137,72 +140,6 @@
         }, 10000);
     }
     setInterval(createSnowImage, 300);
-
-    // เค้กลอยขึ้น
-    function createCake() {
-        const cake = document.createElement("img");
-        cake.src = "img/profile.jpg";
-        cake.classList.add("cake");
-        cake.style.left = (window.innerWidth/2 + (Math.random() * 100 - 50)) + "px";
-        document.body.appendChild(cake);
-        setTimeout(() => {
-            cake.remove();
-        }, 5000);
-    }
-
-    // พลุ
-    function createFirework(x, y) {
-        const firework = document.createElement("div");
-        firework.classList.add("firework");
-        firework.style.left = (x - 75) + "px";
-        firework.style.top = (y - 75) + "px";
-        firework.style.opacity = 1;
-
-        for(let i=0; i<12; i++) {
-            const particle = document.createElement("div");
-            particle.classList.add("particle");
-            const angle = (360 / 12) * i;
-            const radius = 80 + Math.random() * 20;
-            const rad = angle * (Math.PI / 180);
-            particle.style.setProperty('--x', (Math.cos(rad)*radius) + "px");
-            particle.style.setProperty('--y', (Math.sin(rad)*radius) + "px");
-            particle.style.animationDelay = (i*0.05) + "s";
-            firework.appendChild(particle);
-        }
-
-        document.body.appendChild(firework);
-
-        setTimeout(() => {
-            firework.remove();
-        }, 1100);
-    }
-
-    // เปิดของขวัญ
-    const btnOpenGift = document.getElementById('btn-open-gift');
-    const giftMessage = document.getElementById('gift-message');
-
-    btnOpenGift.addEventListener('click', () => {
-        giftMessage.style.display = 'block';
-        createCake();
-        const centerX = window.innerWidth / 2;
-        const centerY = window.innerHeight / 3;
-
-        for (let i = 0; i < 5; i++) {
-            setTimeout(() => {
-                const offsetX = (Math.random() * 200) - 100;
-                const offsetY = (Math.random() * 100) - 50;
-                createFirework(centerX + offsetX, centerY + offsetY);
-            }, i * 400);
-        }
-
-        btnOpenGift.disabled = true;
-        btnOpenGift.textContent = "🎉 ของขวัญถูกเปิดแล้ว";
-
-        // ✅ เปลี่ยนหน้าไป note.html แทน note.php
-        setTimeout(() => {
-            window.location.href = "note.html";
-        }, 3000);
-    });
-</script>
+  </script>
 </body>
 </html>
