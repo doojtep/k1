@@ -2,144 +2,163 @@
 <html lang="th">
 <head>
   <meta charset="UTF-8" />
-  <title>เพิ่มโน้ตของคุณ</title>
+  <title>โน้ตที่บันทึกไว้</title>
   <style>
     @font-face {
       font-family: 'FkAprilBold';
       src: url('/HBD/font/FkAprilBold.ttf') format('truetype');
     }
-
     body {
       font-family: 'FkAprilBold', sans-serif;
-      background: linear-gradient(to right, #ffe1f0, #ffd6ec);
-      padding: 30px;
-      max-width: 800px;
-      margin: auto;
-      position: relative;
-      overflow-x: hidden;
-      z-index: 10;
+      background: linear-gradient(135deg, #ffe6f0, #ffd9e8);
+      padding: 30px 20px;
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      color: #7b3954;
     }
-
     h1 {
-      color: #d63384;
-      margin-bottom: 25px;
-      font-size: 2.2rem;
+      font-size: 2.8rem;
+      margin-bottom: 35px;
+      text-shadow: 1px 1px 3px rgba(255, 192, 203, 0.7);
+    }
+    .notes-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 30px;
+      max-width: 960px;
+      width: 100%;
+    }
+    .note {
+      position: relative;
+      z-index: 1;
+      width: 220px;
+      min-height: 200px;
+      background-color: #fff9c4;
+      border-radius: 18px;
+      box-shadow: 0 8px 20px rgba(203, 182, 212, 0.3);
+      padding: 25px 20px 30px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      font-size: 17px;
+      line-height: 1.5;
       text-align: center;
+      color: #7b3954;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
     }
-
-    label {
-      font-weight: bold;
-      display: block;
-      margin-top: 15px;
-      margin-bottom: 5px;
-      color: #a64f79;
+    .note:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 15px 30px rgba(203, 182, 212, 0.6);
     }
-
-    input[type="date"], textarea {
-      width: 100%;
-      padding: 12px;
-      font-size: 16px;
-      border: 2px solid #f8a5c2;
-      border-radius: 8px;
-      background-color: #fff0f6;
-      color: #333;
-    }
-
-    textarea {
-      height: 150px;
-      resize: vertical;
-      margin-top: 5px;
-      white-space: pre-wrap;
-      overflow-wrap: break-word;
-      min-height: 150px;
-      max-height: 500px;
-      overflow-y: auto;
-    }
-
-    button {
-      margin-top: 20px;
-      padding: 12px 25px;
-      font-size: 16px;
-      background-color: #ff69b4;
-      color: white;
-      border: none;
-      border-radius: 25px;
-      cursor: pointer;
-      transition: background-color 0.3s ease, transform 0.2s ease;
-    }
-
-    button:hover {
-      background-color: #ff4081;
-      transform: scale(1.03);
-    }
-
-    /* แก้ไข z-index ของ snow-container และ falling ให้แมวไม่บังเนื้อหา */
-    .snow-container {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      pointer-events: none;
-      z-index: 0; /* ต่ำกว่าเนื้อหา */
-    }
-
-    .falling {
+    .pin {
       position: absolute;
-      width: 60px;
-      height: auto;
-      animation: fall linear infinite;
-      z-index: 0; /* แมวอยู่ข้างหลัง */
+      top: -18px;
+      left: -18px;
+      font-size: 42px;
+      filter: drop-shadow(0 0 2px rgba(203, 182, 212, 0.5));
+      transform: rotate(-15deg);
     }
-
-    @keyframes fall {
-      0% {
-        transform: translateY(-100px) rotate(0deg);
-        opacity: 1;
-      }
-      100% {
-        transform: translateY(100vh) rotate(360deg);
-        opacity: 0.6;
-      }
+    .note-date {
+      position: absolute;
+      bottom: 12px;
+      right: 15px;
+      font-size: 13px;
+      color: #a5708d;
+      opacity: 0.8;
+      font-style: italic;
+    }
+    form {
+      margin-top: 12px;
+    }
+    button {
+      font-size: 22px;
+      margin: 0 6px;
+      cursor: pointer;
+      background: none;
+      border: none;
+      transition: transform 0.2s ease;
+      color: #7b3954;
+    }
+    button:hover {
+      transform: scale(1.3);
+      color: #a5708d;
+    }
+    a {
+      margin-top: 40px;
+      display: inline-block;
+      text-decoration: none;
+      color: #a5708d;
+      font-weight: 700;
+      font-size: 18px;
+      border: 2px solid #a5708d;
+      padding: 10px 25px;
+      border-radius: 30px;
+      transition: background-color 0.3s ease, color 0.3s ease;
+      box-shadow: 0 5px 10px rgba(203, 182, 212, 0.3);
+    }
+    a:hover {
+      background-color: #a5708d;
+      color: white;
+      box-shadow: 0 8px 18px rgba(203, 182, 212, 0.6);
     }
   </style>
 </head>
 <body>
+  <h1>โน้ตของคุณ</h1>
 
-  <!-- หิมะ -->
-  <div class="snow-container" id="snow-container"></div>
+  <div class="notes-container">
+    <!-- Note 1 (unlocked) -->
+    <div class="note" data-index="0">
+      <div class="pin">📌</div>
+      <div>โน้ตตัวอย่างข้อความที่ 1</div>
+      <div class="note-date">2025-05-28</div>
+      <form class="note-form">
+        <input type="hidden" name="index" value="0">
+        <button type="button" class="lock-btn" title="ล็อกโน้ต" data-locked="0">🔓</button>
+        <button type="button" title="ลบโน้ตนี้" onclick="alert('ลบโน้ตนี้ได้เฉพาะตอนใช้งานจริง');">🗑</button>
+      </form>
+    </div>
 
-  <h1>🎂 เพิ่มโน้ตของคุณ 🎈</h1>
-  <!-- เปลี่ยน form ให้ส่ง POST ไป note.php จริง -->
-  <form action="note.php" method="POST">
-    <label for="date">📅 วันที่:</label>
-    <input type="date" id="date" name="date" required>
+    <!-- Note 2 (locked) -->
+    <div class="note" data-index="1">
+      <div class="pin">📎</div>
+      <div>โน้ตตัวอย่างข้อความที่ 2 (ล็อกแล้ว)</div>
+      <div class="note-date">2025-05-27</div>
+      <form class="note-form">
+        <input type="hidden" name="index" value="1">
+        <button type="button" class="lock-btn" title="ปลดล็อกโน้ต" data-locked="1">🔒</button>
+        <!-- ไม่มีปุ่มลบเพราะล็อกอยู่ -->
+      </form>
+    </div>
+  </div>
 
-    <label for="note">📝 โน้ต:</label>
-    <textarea id="note" name="note" placeholder="พิมพ์โน้ตของคุณที่นี่..." required></textarea>
-    
-    <button type="submit">💖 บันทึกโน้ต</button>
-  </form>
+  <a href="note.php">📝 กลับไปเพิ่มโน้ต</a>
 
   <script>
-    // หิมะ (แมว)
-    const imageSrc = "img/icon-removebg-preview.png";
-    const container = document.getElementById("snow-container");
-
-    function createSnowImage() {
-        const img = document.createElement("img");
-        img.src = imageSrc;
-        img.classList.add("falling");
-        img.style.left = Math.random() * window.innerWidth + "px";
-        const size = Math.random() * 20 + 60;
-        img.style.width = size + "px";
-        img.style.animationDuration = (Math.random() * 3 + 5) + "s";
-        container.appendChild(img);
-        setTimeout(() => {
-            img.remove();
-        }, 10000);
-    }
-    setInterval(createSnowImage, 300);
+    document.querySelectorAll('.lock-btn').forEach(button => {
+      button.addEventListener('click', function(event) {
+        const locked = this.getAttribute('data-locked') === '1';
+        if (locked) {
+          this.textContent = '🔓';
+          this.setAttribute('title', 'ล็อกโน้ต');
+          this.setAttribute('data-locked', '0');
+          // แสดงปุ่มลบถ้ามี
+          const deleteBtn = this.parentElement.querySelector('button[title="ลบโน้ตนี้"]');
+          if (deleteBtn) deleteBtn.style.display = 'inline';
+        } else {
+          this.textContent = '🔒';
+          this.setAttribute('title', 'ปลดล็อกโน้ต');
+          this.setAttribute('data-locked', '1');
+          // ซ่อนปุ่มลบ
+          const deleteBtn = this.parentElement.querySelector('button[title="ลบโน้ตนี้"]');
+          if (deleteBtn) deleteBtn.style.display = 'none';
+        }
+      });
+    });
   </script>
 </body>
 </html>
